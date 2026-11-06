@@ -1,0 +1,31 @@
+# dsh-llm-claude-code bundle layer.
+#
+# 1. Mounts the Claude Code adapter, which registers the `claude-code`
+#    provider route. Requests on that route run through the official
+#    `claude` CLI, signed in with your own Claude subscription.
+# 2. Makes Claude the default model for newly created agents, so every
+#    model call goes to Claude unless you pick another provider in the UI.
+#
+# Override any of this in your profile's cordis.patch.yml (later layers win,
+# and a row's `config` is replaced as a whole, so restate every key you need).
+
+- insert:
+    - id: llm-claude-code
+      name: dsh-llm-claude-code
+      config:
+        provider: claude-code
+        models:
+          - id: opus
+            name: Claude Opus
+            description: Latest Opus via Claude Code
+          - id: sonnet
+            name: Claude Sonnet
+            description: Latest Sonnet via Claude Code
+          - id: haiku
+            name: Claude Haiku
+            description: Latest Haiku via Claude Code
+
+- id: agent-default-model
+  config:
+    provider: claude-code
+    model: sonnet
